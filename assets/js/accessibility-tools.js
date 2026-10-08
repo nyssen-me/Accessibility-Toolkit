@@ -557,12 +557,28 @@ class ReadingMaskManager {
             }
         };
 
+        // Keyboard users: move the band to whatever receives focus, so the focused
+        // element is never left under the dimmed part of the screen
+        this.handleFocus = (e) => this.moveToElement(e.target);
+
         document.addEventListener('mousemove', this.handleMove);
         document.addEventListener('touchmove', this.handleMove);
+        document.addEventListener('focusin', this.handleFocus);
 
-        // Initial position
-        this.updateMaskPosition(this.currentY);
+        // Initial position: on the focused element if activated from the keyboard
+        const focused = document.activeElement;
+        if (focused && focused !== document.body && focused.matches(':focus-visible')) {
+            this.moveToElement(focused);
+        } else {
+            this.updateMaskPosition(this.currentY);
+        }
         storage.set(this.storageKey, 'active');
+    }
+
+    moveToElement(element) {
+        const rect = element.getBoundingClientRect();
+        this.currentY = rect.top + rect.height / 2;
+        this.updateMaskPosition(this.currentY);
     }
 
     deactivate() {
@@ -573,6 +589,7 @@ class ReadingMaskManager {
 
         document.removeEventListener('mousemove', this.handleMove);
         document.removeEventListener('touchmove', this.handleMove);
+        document.removeEventListener('focusin', this.handleFocus);
 
         if (this.rafId) {
             cancelAnimationFrame(this.rafId);
