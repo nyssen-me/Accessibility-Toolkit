@@ -241,7 +241,7 @@ class ThemeManager {
         if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             return 'dark-theme';
         }
-        if (window.matchMedia('(prefers-contrast: high)').matches) {
+        if (window.matchMedia('(prefers-contrast: more)').matches) {
             return 'high-contrast';
         }
         return 'light-theme';
@@ -257,7 +257,7 @@ class ThemeManager {
         };
 
         handleChange(window.matchMedia('(prefers-color-scheme: dark)'), 'dark-theme', 'light-theme');
-        handleChange(window.matchMedia('(prefers-contrast: high)'), 'high-contrast', 'light-theme');
+        handleChange(window.matchMedia('(prefers-contrast: more)'), 'high-contrast', 'light-theme');
     }
 
     handleThemeChange(e) {
@@ -287,7 +287,7 @@ class ThemeManager {
             systemBadge.style.display = storage.get(this.storageKey) ? 'none' : 'inline-flex';
         }
 
-        // Update aria-checked states
+        // Update aria-checked states (roving tabindex: only the checked radio is in the tab order)
         const themeMap = {
             'light-theme': 'light',
             'dark-theme': 'dark',
@@ -296,7 +296,9 @@ class ThemeManager {
         };
 
         this.buttons.forEach(button => {
-            button.setAttribute('aria-checked', button.dataset.theme === themeMap[theme] ? 'true' : 'false');
+            const isChecked = button.dataset.theme === themeMap[theme];
+            button.setAttribute('aria-checked', isChecked ? 'true' : 'false');
+            button.setAttribute('tabindex', isChecked ? '0' : '-1');
         });
     }
 }
@@ -337,9 +339,11 @@ class FontManager {
     applyFont(font) {
         document.documentElement.setAttribute('data-selected-font', font);
 
-        // Update aria-checked states
+        // Update aria-checked states (roving tabindex: only the checked radio is in the tab order)
         this.buttons.forEach(button => {
-            button.setAttribute('aria-checked', button.dataset.font === font ? 'true' : 'false');
+            const isChecked = button.dataset.font === font;
+            button.setAttribute('aria-checked', isChecked ? 'true' : 'false');
+            button.setAttribute('tabindex', isChecked ? '0' : '-1');
         });
     }
 }
@@ -490,6 +494,13 @@ class ResetManager {
 
         if (!this.button) return;
 
+        // Live region must already exist in the DOM before its text changes, or screen readers may
+        // miss it. Placed inside the panel so it is not hidden by aria-modal.
+        this.liveRegion = document.createElement('div');
+        this.liveRegion.setAttribute('role', 'status');
+        this.liveRegion.className = 'sr-only';
+        this.button.insertAdjacentElement('afterend', this.liveRegion);
+
         this.button.addEventListener('click', () => this.resetAll());
     }
 
@@ -519,14 +530,11 @@ class ResetManager {
             this.managers.readingMask.deactivate();
         }
 
-        // Announce to screen readers
-        const announcement = document.createElement('div');
-        announcement.setAttribute('role', 'status');
-        announcement.setAttribute('aria-live', 'polite');
-        announcement.className = 'sr-only';
-        announcement.textContent = 'All accessibility settings have been reset to defaults';
-        document.body.appendChild(announcement);
-        setTimeout(() => announcement.remove(), 1000);
+        // Announce to screen readers (cleared first so repeated resets are announced again)
+        this.liveRegion.textContent = '';
+        setTimeout(() => {
+            this.liveRegion.textContent = 'All accessibility settings have been reset to defaults';
+        }, 100);
     }
 }
 

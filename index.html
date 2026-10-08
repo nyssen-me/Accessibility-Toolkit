@@ -1,206 +1,240 @@
 <!DOCTYPE html>
 <html lang="en" id="accessibility-switcher">
 <head>
-	<meta charset="UTF-8">
-	<title>Nyssen - Accessibility Tools</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <!-- https://www.sitepoint.com/a-basic-html5-template/ -->
-    <!--<link rel="icon" href="/favicon.svg" type="image/svg+xml">-->
-	
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-	<link rel="stylesheet" href="assets/css/accessibility-tools.css?ver=1.1">
-    <link rel="stylesheet" href="assets/css/milligram.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nyssen - Accessibility Toolkit</title>
+    <meta name="description" content="A lightweight, privacy-friendly accessibility toolkit with display modes, text controls, a reading mask and other visual aids. Try every feature live on this page.">
+    <link rel="canonical" href="https://nyssen.me/tools/accessibility-toolkit/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nyssen">
+    <meta property="og:title" content="Accessibility Toolkit">
+    <meta property="og:description" content="A lightweight, privacy-friendly accessibility toolkit with display modes, text controls, a reading mask and other visual aids.">
+    <meta property="og:url" content="https://nyssen.me/tools/accessibility-toolkit/">
+
+    <!-- Apply saved settings before first paint, so there is no flash of the wrong theme -->
+    <script>
+        (function () {
+            try {
+                var root = document.documentElement;
+                var theme = localStorage.getItem('accessibility-theme');
+                if (!/^(light-theme|dark-theme|high-contrast|greyscale)$/.test(theme)) {
+                    theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark-theme'
+                        : matchMedia('(prefers-contrast: more)').matches ? 'high-contrast'
+                        : 'light-theme';
+                }
+                root.classList.add(theme);
+                root.setAttribute('data-selected-font', localStorage.getItem('accessibility-font') || 'normal');
+                if (localStorage.getItem('accessibility-cursor') === 'active') root.setAttribute('data-cursor', 'big-cursor');
+                if (localStorage.getItem('accessibility-links') === 'active') root.setAttribute('data-links', 'highlight');
+                if (localStorage.getItem('accessibility-images') === 'active') root.setAttribute('data-images', 'images-hidden');
+            } catch (e) {}
+        })();
+    </script>
+
+    <link rel="stylesheet" href="assets/css/normalize.min.css">
+    <link rel="stylesheet" href="assets/css/accessibility-tools.css?ver=1.2">
+    <link rel="stylesheet" href="assets/css/milligram.css?ver=1.2">
+
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <script src="assets/js/accessibility-tools.js?ver=1.2" defer></script>
 </head>
 
 <body>
-    
+
     <a href="#maincontent" id="skip-link">Skip to main content</a>
 
-
-    <!-- Example: Toggle button in header -->
     <header>
-        <nav>
-            <!-- Your navigation here -->
-        </nav>
-        
-        <!-- Accessibility Widget Toggle Button (can be placed anywhere) -->
-        <div class="accessibility-widget-trigger">
-            <button 
-                class="accessibility-toggle-btn" 
-                type="button" 
-                aria-haspopup="dialog" 
-                aria-label="Accessibility options" 
-                aria-expanded="false"
-                aria-controls="accessibility-panel">
-                <span>Accessibility Tools</span>
-                <svg class="svg-icon svg-open" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <path d="M12 6q-.825 0-1.412-.587T10 4t.588-1.412T12 2t1.413.588T14 4t-.587 1.413T12 6M9 22V9H3V7h18v2h-6v13h-2v-6h-2v6z"/>
-                </svg>
-                <svg class="svg-icon svg-close" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-                    <path d="m8.382 17.025-1.407-1.4L10.593 12 6.975 8.4 8.382 7 12 10.615 15.593 7 17 8.4 13.382 12 17 15.625l-1.407 1.4L12 13.41z"/>
-                </svg>
-            </button>
+        <div class="container">
+            <div class="row">
+                <div class="column">
+
+                    <h1>Accessibility toolkit</h1>
+
+                </div>
+
+                <div class="column">
+
+                    <!-- Accessibility Widget Toggle Button (can be placed anywhere) -->
+                    <div class="accessibility-widget-trigger">
+                        <button
+                            class="accessibility-toggle-btn"
+                            type="button"
+                            aria-haspopup="dialog"
+                            aria-expanded="false"
+                            aria-controls="accessibility-panel">
+                            <span>Accessibility Tools</span>
+                            <svg class="svg-icon svg-open" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M12 6q-.825 0-1.412-.587T10 4t.588-1.412T12 2t1.413.588T14 4t-.587 1.413T12 6M9 22V9H3V7h18v2h-6v13h-2v-6h-2v6z"/>
+                            </svg>
+                            <svg class="svg-icon svg-close" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="m8.382 17.025-1.407-1.4L10.593 12 6.975 8.4 8.382 7 12 10.615 15.593 7 17 8.4 13.382 12 17 15.625l-1.407 1.4L12 13.41z"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </header>
 
-	
-	<!-- Accessibility Widget Panel (can be placed anywhere, typically at end of body) -->
-    <div 
-        class="accessibility-widget-panel" 
-        id="accessibility-panel" 
+
+    <!-- Accessibility Widget Panel (can be placed anywhere, typically at end of body) -->
+    <div
+        class="accessibility-widget-panel"
+        id="accessibility-panel"
         role="dialog"
-        aria-label="Accessibility Settings"
+        aria-modal="true"
+        aria-labelledby="accessibility-panel-title"
         aria-hidden="true"
         data-open="false">
 
         <!-- Panel Header with Close Button -->
         <div class="widget-panel-header">
             <div class="widget-panel-wrapper">
-                <h2 class="widget-panel-title">Accessibility Tools</h2>
-                <button class="widget-close-btn" 
-                        type="button" 
+                <h2 id="accessibility-panel-title" class="widget-panel-title">Accessibility Tools</h2>
+                <button class="widget-close-btn"
+                        type="button"
                         aria-label="Close accessibility panel"
                         title="Close (Esc)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path d="m8.382 17.025-1.407-1.4L10.593 12 6.975 8.4 8.382 7 12 10.615 15.593 7 17 8.4 13.382 12 17 15.625l-1.407 1.4L12 13.41z"/>
                     </svg>
                 </button>
             </div>
         </div>
-        
+
         <div class="accessibility-widget-content">
-            
+
             <!-- Display Modes Section -->
             <section class="widget-section" aria-labelledby="display-modes-heading">
-                <h2 id="display-modes-heading" class="widget-section-heading">Display Modes</h2>
+                <h3 id="display-modes-heading" class="widget-section-heading">Display Modes</h3>
                 <div class="display-modes" role="radiogroup" aria-labelledby="display-modes-heading">
-                    <button 
-                        id="btn-light" 
-                        class="theme-button" 
+                    <button
+                        id="btn-light"
+                        class="theme-button"
+                        type="button"
                         role="radio"
                         aria-checked="true"
-                        aria-label="Light Mode"
                         data-theme="light">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M11 4V1h2v3zm0 19v-3h2v3zm9-10v-2h3v2zM1 13v-2h3v2zm17.7-6.3-1.4-1.4 1.75-1.8 1.45 1.45zM4.95 20.5 3.5 19.05l1.8-1.75 1.4 1.4zm14.1 0-1.75-1.8 1.4-1.4 1.8 1.75zM5.3 6.7 3.5 4.95 4.95 3.5 6.7 5.3zM12 18q-2.5 0-4.25-1.75T6 12t1.75-4.25T12 6t4.25 1.75T18 12t-1.75 4.25T12 18"/>
                         </svg>
                         <span>Light Mode</span>
                     </button>
-                    <button 
-                        id="btn-dark" 
-                        class="theme-button" 
+                    <button
+                        id="btn-dark"
+                        class="theme-button"
+                        type="button"
                         role="radio"
                         aria-checked="false"
-                        aria-label="Dark Mode"
                         data-theme="dark">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M12 21q-3.75 0-6.375-2.625T3 12t2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21"/>
                         </svg>
                         <span>Dark Mode</span>
                     </button>
-                    <button 
-                        id="btn-contrast" 
-                        class="theme-button" 
+                    <button
+                        id="btn-contrast"
+                        class="theme-button"
+                        type="button"
                         role="radio"
                         aria-checked="false"
-                        aria-label="High Contrast Mode"
                         data-theme="contrast">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M12.003 21q-1.866 0-3.51-.708-1.643-.709-2.859-1.924t-1.925-2.856T3 12.003t.709-3.51Q4.417 6.85 5.63 5.634t2.857-1.925T11.997 3t3.51.709q1.643.708 2.859 1.922t1.925 2.857.709 3.509-.708 3.51-1.924 2.859-2.856 1.925-3.509.709m.497-1.017q3.09-.202 5.295-2.459T20 12t-2.185-5.505T12.5 4.017z"/>
                         </svg>
                         <span>High Contrast</span>
                     </button>
-                    <button 
-                        id="btn-greyscale" 
-                        class="theme-button" 
+                    <button
+                        id="btn-greyscale"
+                        class="theme-button"
+                        type="button"
                         role="radio"
                         aria-checked="false"
-                        aria-label="Greyscale Mode"
                         data-theme="greyscale">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                             <path d="M16 0h-4v16h4zM6 4h4v12H6zM0 8h4v8H0z"/>
                         </svg>
                         <span>Greyscale</span>
                     </button>
                 </div>
             </section>
-            
+
             <!-- Text Controls Section -->
             <section class="widget-section" aria-labelledby="text-controls-heading">
-                <h2 id="text-controls-heading" class="widget-section-heading">Text Controls</h2>
+                <h3 id="text-controls-heading" class="widget-section-heading">Text Controls</h3>
                 <div class="text-controls" role="radiogroup" aria-labelledby="text-controls-heading">
-                    <button 
-                        data-font="normal" 
+                    <button
+                        type="button"
+                        data-font="normal"
                         role="radio"
-                        aria-checked="true" 
-                        aria-label="Normal Font Size">
-                        <span class="font-preview font-preview--normal">A</span>
+                        aria-checked="true"
+                        aria-label="Normal text size">
+                        <span class="font-preview font-preview--normal" aria-hidden="true">A</span>
                         <span>Normal</span>
                     </button>
-                    <button 
-                        data-font="large" 
+                    <button
+                        type="button"
+                        data-font="large"
                         role="radio"
-                        aria-checked="false" 
-                        aria-label="Large Font Size">
-                        <span class="font-preview font-preview--large">A</span>
+                        aria-checked="false"
+                        aria-label="Large text size">
+                        <span class="font-preview font-preview--large" aria-hidden="true">A</span>
                         <span>Large</span>
                     </button>
-                    <button 
-                        data-font="bold" 
+                    <button
+                        type="button"
+                        data-font="bold"
                         role="radio"
-                        aria-checked="false" 
-                        aria-label="Bold Text">
-                        <span class="font-preview font-preview--bold">A</span>
+                        aria-checked="false"
+                        aria-label="Bold text">
+                        <span class="font-preview font-preview--bold" aria-hidden="true">A</span>
                         <span>Bold</span>
                     </button>
                 </div>
             </section>
-            
+
             <!-- Visual Aids Section -->
             <section class="widget-section" aria-labelledby="visual-aids-heading">
-                <h2 id="visual-aids-heading" class="widget-section-heading">Visual Aids</h2>
+                <h3 id="visual-aids-heading" class="widget-section-heading">Visual Aids</h3>
                 <div class="visual-aids">
-                    <button 
-                        class="js__cursor-toggle visual-aid-toggle" 
-                        type="button" 
-                        aria-pressed="false" 
-                        aria-label="Toggle large cursor">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <button
+                        class="js__cursor-toggle visual-aid-toggle"
+                        type="button"
+                        aria-pressed="false">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M19.97 9.039 3.108 3.114l5.925 16.863 3.378-4.728 5.773 5.773 2.829-2.828-5.774-5.775z"/>
                         </svg>
                         <span class="toggle-text">Large Cursor</span>
                     </button>
-                    <button 
-                        class="js__links-toggle visual-aid-toggle" 
-                        type="button" 
-                        aria-pressed="false" 
-                        aria-label="Toggle link highlighting">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <button
+                        class="js__links-toggle visual-aid-toggle"
+                        type="button"
+                        aria-pressed="false">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M4.222 19.778a4.98 4.98 0 0 0 3.535 1.462 5 5 0 0 0 3.536-1.462l2.828-2.829-1.414-1.414-2.828 2.829a3.007 3.007 0 0 1-4.243 0 3.005 3.005 0 0 1 0-4.243l2.829-2.828-1.414-1.414-2.829 2.828a5.006 5.006 0 0 0 0 7.071m15.556-8.485a5.01 5.01 0 0 0 0-7.071 5.006 5.006 0 0 0-7.071 0L9.879 7.051l1.414 1.414 2.828-2.829a3.007 3.007 0 0 1 4.243 0 3.005 3.005 0 0 1 0 4.243l-2.829 2.828 1.414 1.414z"/>
                             <path fill="currentColor" d="m8.464 16.95-1.415-1.414 8.487-8.486 1.414 1.415z"/>
                         </svg>
                         <span class="toggle-text">Highlight Links</span>
                     </button>
-                    <button 
-                        class="js__images-toggle visual-aid-toggle" 
-                        type="button" 
-                        aria-pressed="false" 
-                        aria-label="Toggle image visibility">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <button
+                        class="js__images-toggle visual-aid-toggle"
+                        type="button"
+                        aria-pressed="false">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M6 17h12l-3.75-5-3 4L9 13zm-3 4V3h18v18zm5.5-11q.625 0 1.063-.437T10 8.5t-.437-1.062T8.5 7t-1.062.438T7 8.5t.438 1.063T8.5 10"/>
                         </svg>
                         <span class="toggle-text">Hide Images</span>
                     </button>
-                    <button 
-                        class="js__reading-mask-toggle visual-aid-toggle" 
-                        type="button" 
-                        aria-pressed="false" 
-                        aria-label="Toggle reading mask">
-                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                    <button
+                        class="js__reading-mask-toggle visual-aid-toggle"
+                        type="button"
+                        aria-pressed="false">
+                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                             <path d="M13 12h7v1.5h-7zm0-2.5h7V11h-7zm0 5h7V16h-7zM23 4H1v17h22zm-2 15h-9V6h9z"/>
                         </svg>
                         <span class="toggle-text">Reading Mask</span>
@@ -209,24 +243,23 @@
             </section>
 
             <!-- Reset Button -->
-            <button 
-                id="resetButton" 
-                class="reset-button" 
-                type="button"
-                aria-label="Reset all accessibility settings to defaults">
+            <button
+                id="resetButton"
+                class="reset-button"
+                type="button">
                 <span>Reset All Settings</span>
             </button>
 
             <!-- Footer Links -->
             <div class="widget-footer">
-                <a href="/accessibility-user-guide" class="widget-footer-link">
-                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                <a href="https://github.com/nyssen-me/Accessibility-Toolkit/blob/main/USER-GUIDE.md" class="widget-footer-link">
+                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path fill="currentColor" d="M19 2H5c-1.11 0-2 .9-2 2v16c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2M9 4h2v5l-1-.75L9 9zm10 16H5V4h2v9l3-2.25L13 13V4h6z"/>
                     </svg>
                     <span>User Guide</span>
                 </a>
-                <a href="/accessibility-statement" class="widget-footer-link">
-                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                <a href="https://nyssen.me/accessibility.html" class="widget-footer-link">
+                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path fill="currentColor" d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8"/>
                     </svg>
                     <span>Accessibility Statement</span>
@@ -235,30 +268,49 @@
         </div>
     </div>
 
-    <!-- Backdrop for modal overlay (optional) -->
-    <!-- <div class="accessibility-widget-backdrop" aria-hidden="true"></div> -->
 
-	
-	<main role="main" class="wrapper" id="maincontent">
-                
+    <main class="wrapper" id="maincontent">
+
         <section>
-            <div class="container container-wide">
-
-                <h1>Accessibility widget</h1>
-                
-                <h3 class="title">Tempor id eu nisl nunc mi</h3>
+            <div class="container">
                 
                 <div class="row">
                     <div class="column">
+
+                        <p class="text-large">A lightweight, customizable accessibility toolkit that provides users with visual and reading assistance tools to improve their browsing experience.</p>
+
+                        <h2 class="title">Overview</h2>
+                        <p>This accessibility widget offers a comprehensive set of tools designed to help users with various accessibility needs, including visual impairments, dyslexia, ADHD, motor difficulties, and more. The widget is fully keyboard-accessible, privacy-focused, and has minimal performance impact.</p>
+
+                        <p><strong>Full documentation</strong> is available at <a href="https://github.com/nyssen-me/Accessibility-Toolkit" rel="noopener">https://github.com/nyssen-me/Accessibility-Toolkit</a>.</p>
+                    </div>
+
+                    <div class="column column-25"></div>
+                </div>
+
+                <hr>
+
+            </div>
+        </section>
+                
+        <section>
+            <div class="container">
+
+                <h2 class="title">Example content</h2>
+
+                <div class="row">
+                    <div class="column">
+
+                        <h3 class="title">Tempor id eu nisl nunc mi</h3>
 
                         <p>Lorem ipsum dolor sit amet, <a href="#">consectetur adipiscing elit</a>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
                         <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem <a href="#">accusantium</a> doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
                         
                     </div>
-                    <div class="column">
+                    <div class="column column-offset-5">
 
-                        <img src="assets/images/img_5255.webp" alt=""/>
+                        <img src="assets/images/img_5255.webp" width="900" height="600" loading="lazy" decoding="async" alt="Sunset over the forested hills of the Serra de l’Obac, with the jagged Montserrat massif on the horizon.">
                         
                     </div>
                 </div>
@@ -310,33 +362,11 @@
         <div class="container">
             <div class="row">
                 <div class="column">
-                    <strong>Fugiat commodo reprehenderit do dolor</strong>
-                    <address>
-                         Sed nulla amet lorem feugiat tempus,<br>
-                        123 Elm Street, Edinburgh, WC2H 7BY
-                    </address>
-                </div>
-
-                <div class="column">
-                    <ul class="contact-media">
-                        <li><strong>Telephone:</strong> <a class="phone" href="tel:01310000000">0131 000 0000</a></li>
-                        <li><strong>Email:</strong> <a class="email" href="mailto:info@yourdomain.org.uk">info@yourdomain.org.uk</a></li>
-                        <li><strong><a href="#" target="_blank">Facebook</a></strong> / <strong><a href="#" target="_blank">Twitter</a></strong></li>
-                    </ul>
-                </div>
-
-                <div class="column">
-                    Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus. Proin sed facilisis ante interdum.
-
-                    <div class="legal-links">
-                        <a href="#" target="_blank">Privacy Policy</a> / <a href="#" target="_blank">Cookie Statement</a>
-                    </div>
+                    <p>Made by <a href="https://nyssen.me" rel="noopener">Nyssen</a> · <a href="https://github.com/nyssen-me/Accessibility-Toolkit" rel="noopener">Source code on GitHub</a></p>
                 </div>
             </div>
         </div>
     </footer>
-
-	<script  src="assets/js/accessibility-tools.js?ver=1.1"></script>
 
 </body>
 </html>
