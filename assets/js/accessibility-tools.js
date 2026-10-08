@@ -110,6 +110,56 @@ class AccessibilityWidgetController {
         if (this.backdrop) {
             this.backdrop.addEventListener('click', () => this.close());
         }
+
+        this.initActiveSettingsStatus();
+    }
+
+    /**
+     * The "settings active" marker on the toggle button is CSS-only, so expose the same
+     * information to assistive technology as the button's accessible description.
+     * Watches the <html> attributes the marker's CSS uses, so the two never disagree.
+     */
+    initActiveSettingsStatus() {
+        // `hidden` keeps it out of the reading order; aria-describedby still reads hidden elements
+        this.statusElement = document.createElement('span');
+        this.statusElement.id = 'accessibility-active-settings';
+        this.statusElement.hidden = true;
+        document.body.appendChild(this.statusElement);
+
+        this.toggleButtons.forEach(button => {
+            const ids = (button.getAttribute('aria-describedby') || '').split(' ').filter(Boolean);
+            if (!ids.includes(this.statusElement.id)) ids.push(this.statusElement.id);
+            button.setAttribute('aria-describedby', ids.join(' '));
+        });
+
+        this.updateActiveSettingsStatus();
+
+        new MutationObserver(() => this.updateActiveSettingsStatus()).observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class', 'data-selected-font', 'data-cursor', 'data-links', 'data-images', 'data-reading-mask']
+        });
+    }
+
+    updateActiveSettingsStatus() {
+        const root = document.documentElement;
+        const settings = [
+            [root.classList.contains('dark-theme'), 'Dark mode'],
+            [root.classList.contains('high-contrast'), 'High contrast'],
+            [root.classList.contains('greyscale'), 'Greyscale'],
+            [root.dataset.selectedFont === 'large', 'Large text'],
+            [root.dataset.selectedFont === 'bold', 'Bold text'],
+            [root.dataset.cursor === 'big-cursor', 'Large cursor'],
+            [root.dataset.links === 'highlight', 'Highlight links'],
+            [root.dataset.images === 'images-hidden', 'Hide images'],
+            [root.dataset.readingMask === 'active', 'Reading mask']
+        ];
+
+        const active = settings.filter(([isOn]) => isOn).map(([, label]) => label);
+        const text = active.length ? `Active settings: ${active.join(', ')}` : '';
+
+        if (this.statusElement.textContent !== text) {
+            this.statusElement.textContent = text;
+        }
     }
 
     updateFocusableElements() {
