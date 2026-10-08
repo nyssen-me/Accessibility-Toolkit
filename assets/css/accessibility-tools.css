@@ -669,25 +669,28 @@ button:focus-visible,
     font-style: italic;
 }
 
-/* Large Font */
+/* Large Font: 75% = 120% of the 62.5% base, so all rem-based text grows by 20% */
 :root[data-selected-font="large"] {
-    font-size: 85%;
+    font-size: 75%;
 }
 
-/* Bold Font */
+/* Bold Font: large (same 20% increase as Large Font) and bold */
 :root[data-selected-font="bold"] {
-    font-size: 85%;
+    font-size: 75%;
     font-weight: 700;
 }
 
+/* Every element, including those with their own weight (headings, buttons, form controls).
+   !important because this is a user preference and must win over the site's styles.
+   The Text Controls "A" previews are excluded so they still illustrate each option. */
 :root[data-selected-font="bold"] body,
-:root[data-selected-font="bold"] p {
-    font-weight: 700;
+:root[data-selected-font="bold"] body *:not(strong):not(b):not(.font-preview) {
+    font-weight: 700 !important;
 }
 
 :root[data-selected-font="bold"] strong,
 :root[data-selected-font="bold"] b {
-    font-weight: 900;
+    font-weight: 900 !important;
 }
 
 /* ============================================
