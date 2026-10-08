@@ -277,8 +277,9 @@ class ThemeManager {
         const savedTheme = storage.get(this.storageKey);
         this.applyTheme(savedTheme || this.detectSystemTheme());
 
-        // Watch for system theme changes only if no manual preference
-        if (!savedTheme) this.watchSystemTheme();
+        // Always watch for system theme changes; the handler ignores them while a manual
+        // preference is saved, so they apply again as soon as Reset clears it
+        this.watchSystemTheme();
 
         // Bind events
         this.buttons.forEach(button => {
@@ -656,7 +657,7 @@ class ResetManager {
         root.setAttribute('data-reading-mask', 'inactive');
 
         // Update UI states
-        this.managers.theme?.applyTheme('light-theme');
+        this.managers.theme?.applyTheme(this.managers.theme.detectSystemTheme());
         this.managers.font?.applyFont('normal');
         this.managers.cursor?.setState(false);
         this.managers.links?.setState(false);
