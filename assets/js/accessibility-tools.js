@@ -1,6 +1,6 @@
 /**
  * Accessible Widget Controller
- * WCAG 2.1 AA Compliant
+ * WCAG 2.2 AA Compliant
  */
 
 // Utility: Shared keyboard navigation for radio groups
