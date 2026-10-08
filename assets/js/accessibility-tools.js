@@ -359,6 +359,7 @@ class VisualAidManager {
         this.attribute = options.attribute;
         this.activeValue = options.activeValue;
         this.inactiveValue = options.inactiveValue;
+        this.onChange = options.onChange || null;
 
         if (!this.button) return;
 
@@ -378,6 +379,67 @@ class VisualAidManager {
     setState(isActive) {
         document.documentElement.setAttribute(this.attribute, isActive ? this.activeValue : this.inactiveValue);
         this.button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        if (this.onChange) this.onChange(isActive);
+    }
+}
+
+
+/**
+ * Image Alt Text Manager
+ * Adds a visible text stand-in after each image, shown by CSS while "Hide Images" is on.
+ * Only one of the image and its label is displayed at a time, so screen readers never
+ * hear the description twice, and image-only links keep their accessible name.
+ */
+class ImageAltTextManager {
+    constructor() {
+        this.labelClass = 'img-alt-text';
+        this.observer = null;
+    }
+
+    enable() {
+        this.addLabels(document.body);
+
+        // Label images added later (carousels, lazy-loaded content) while the option is on
+        if (!this.observer && 'MutationObserver' in window) {
+            this.observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === Node.ELEMENT_NODE) this.addLabels(node);
+                    });
+                });
+            });
+            this.observer.observe(document.body, { childList: true, subtree: true });
+        }
+    }
+
+    disable() {
+        // Labels stay in the DOM (hidden by CSS) so re-enabling is instant
+        if (this.observer) {
+            this.observer.disconnect();
+            this.observer = null;
+        }
+    }
+
+    addLabels(root) {
+        const images = root.matches('img') ? [root] : root.querySelectorAll('img');
+        images.forEach(img => this.addLabel(img));
+    }
+
+    addLabel(img) {
+        if (img.dataset.altLabel || img.closest('.accessibility-widget-panel')) return;
+
+        // Empty or missing alt: decorative (or undescribed), so it is just hidden
+        const alt = (img.getAttribute('alt') || '').trim();
+        if (!alt) return;
+
+        img.dataset.altLabel = 'true';
+
+        const label = document.createElement('span');
+        label.className = this.labelClass;
+        label.setAttribute('role', 'img');
+        label.setAttribute('aria-label', alt);
+        label.textContent = `Image: ${alt}`;
+        img.insertAdjacentElement('afterend', label);
     }
 }
 
@@ -551,6 +613,7 @@ function initAccessibilityWidget() {
     });
     
     // Initialize feature managers
+    const imageAltText = new ImageAltTextManager();
     const managers = {
         theme: new ThemeManager(),
         font: new FontManager(),
@@ -573,7 +636,8 @@ function initAccessibilityWidget() {
             selector: '.js__images-toggle',
             attribute: 'data-images',
             activeValue: 'images-hidden',
-            inactiveValue: 'images-mode'
+            inactiveValue: 'images-mode',
+            onChange: (isActive) => isActive ? imageAltText.enable() : imageAltText.disable()
         }),
         readingMask: new ReadingMaskManager()
     };

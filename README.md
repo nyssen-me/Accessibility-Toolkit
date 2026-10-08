@@ -73,7 +73,7 @@ The widget automatically detects the user's device color preference on first vis
 
 - **Large Cursor** - Increases cursor size approximately 3x
 - **Highlight Links** - Adds yellow background and underline to all links
-- **Hide Images** - Hides images and displays alt text instead
+- **Hide Images** - Hides images and displays their alt text in their place (decorative images with an empty `alt` are simply hidden)
 - **Reading Mask** - Creates a spotlight effect that highlights the current reading line (proven to help users with dyslexia read 15-25% faster)
 
 ### Additional Features

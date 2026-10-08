@@ -652,9 +652,21 @@ button:focus-visible,
     outline: 2px solid #000;
 }
 
-/* Hide Images */
+/* Hide Images (each image is replaced by its alt text label, added by JS) */
+.img-alt-text {
+    display: none;
+}
+
 :root[data-images="images-hidden"] img {
-    visibility: hidden;
+    display: none;
+}
+
+:root[data-images="images-hidden"] .img-alt-text {
+    display: inline-block;
+    max-width: 100%;
+    padding: 0.4rem 0.8rem;
+    border: 0.2rem dashed currentColor;
+    font-style: italic;
 }
 
 /* Large Font */
