@@ -566,8 +566,14 @@ class ReadingMaskManager {
         document.addEventListener('focusin', this.handleFocus);
 
         // Initial position: on the focused element if activated from the keyboard
+        // (matches() throws in browsers without :focus-visible support, hence the try)
         const focused = document.activeElement;
-        if (focused && focused !== document.body && focused.matches(':focus-visible')) {
+        let fromKeyboard = false;
+        try {
+            fromKeyboard = !!focused && focused !== document.body && focused.matches(':focus-visible');
+        } catch (e) {}
+
+        if (fromKeyboard) {
             this.moveToElement(focused);
         } else {
             this.updateMaskPosition(this.currentY);
