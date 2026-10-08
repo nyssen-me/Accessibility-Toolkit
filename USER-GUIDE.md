@@ -24,7 +24,7 @@ We continue to work on ensuring our website is built with accessibility best pra
 
 ### Performance
 
-We've developed these tools with **performance in mind**. Using them will have a **minimal impact on page loading speed** – typically less than 1% – so you can customise your experience without worrying about slowing down your browsing.
+We've developed these tools with **performance in mind**. They are lightweight and have a **minimal impact on page loading speed**, so you can customise your experience without worrying about slowing down your browsing.
 
 ---
 
@@ -60,6 +60,7 @@ Choose the colour scheme that works best for you:
 - Makes content easier to see
 - Particularly helpful for users with low vision
 - Reduces visual fatigue
+- **Automatically selected** if your device is set to increase contrast (and not set to dark mode)
 
 #### ◼️ Greyscale Mode
 - Removes all colours from the page
@@ -67,7 +68,7 @@ Choose the colour scheme that works best for you:
 - Can help with concentration
 - Useful for some types of colour blindness
 
-**Note:** The widget will automatically detect your device's colour preference (light or dark mode) and apply it when you first visit. You can override this at any time by selecting a different mode.
+**Note:** The widget will automatically detect your device's display preferences (light or dark mode, and increased contrast) and apply them when you first visit. You can override this at any time by selecting a different mode.
 
 ---
 
@@ -85,7 +86,8 @@ Adjust how text appears on the page:
 - Helpful for users with visual impairments
 
 #### 🔠 Bold Text
-- Makes all text bolder and thicker
+- Makes all text bold, including headings and buttons
+- Also increases all text by 20%, like Large Text Size
 - Improves legibility
 - Can help with reading difficulties
 
@@ -109,17 +111,17 @@ Makes all clickable links stand out clearly:
 
 #### 🖼️ Hide Images
 Removes images and shows their descriptions instead:
-- **Who it helps:** Users who find images distracting, those with slow internet connections, or users focused on reading text content
-- **What it does:** Hides images and displays their alternative text descriptions
+- **Who it helps:** Users who find images distracting, or users focused on reading text content
+- **What it does:** Hides images and displays their alternative text descriptions in their place
 - **When to use it:** When you want to focus purely on text content without visual distractions
-- **Note:** Image descriptions (alt text) remain visible, so you won't miss important information
+- **Note:** Image descriptions (alt text) remain visible, so you won't miss important information. Purely decorative images have no description, so they are simply hidden
 
 #### 📖 Reading Mask
 Creates a spotlight effect that highlights the line you're reading:
 - **Who it helps:** Users with dyslexia, ADHD, visual tracking difficulties, or anyone who finds it hard to keep their place whilst reading
 - **What it does:** Dims the entire page except for a clear band around your mouse pointer, making it easier to focus on one line at a time
-- **How it works:** The clear reading area (about 60 pixels tall) follows your mouse or finger as you move down the page
-- **Research shows:** Users with dyslexia can read 15-25% faster when using a reading mask
+- **How it works:** The clear reading area (about 100 pixels tall) follows your mouse or finger as you move down the page. If you use a keyboard, it moves to each link or button as you press `Tab`
+- **Why it helps:** Many people with dyslexia find a reading mask makes it easier to keep their place and read more comfortably
 - **When to use it:** For reading long articles, blog posts, or any text-heavy content
 
 ---
@@ -153,12 +155,12 @@ If you have difficulty seeing clearly, these tools can help:
 
 If you have dyslexia, these tools are particularly helpful:
 
-- ✅ **Reading Mask** – Reduces visual crowding and helps you focus on one line at a time (this is the most beneficial tool for dyslexia)
+- ✅ **Reading Mask** – Reduces visual crowding and helps you focus on one line at a time (often the most helpful tool for dyslexia)
 - ✅ **Bold Text** – Makes letters more distinct
 - ✅ **Large Text Size** – Reduces strain
 - ✅ **High Contrast Mode** – Makes text easier to process
 
-**Research shows** that people with dyslexia can read 15-25% faster when using a reading mask.
+Many people with dyslexia find that a reading mask helps them keep their place and read more easily.
 
 ---
 
@@ -248,8 +250,9 @@ The reading mask is one of our most powerful tools. Here's how to get the most f
 2. **Start reading:** A semi-transparent overlay will appear, with a clear band where your mouse pointer is
 3. **Read naturally:** As you move your mouse down the page, the clear reading area moves with you
 4. **On touch devices:** The reading area follows your finger
-5. **Adjust as needed:** Move your mouse up or down to position the clear area exactly where you need it
-6. **Deactivate:** Click the "Reading Mask" button again to turn it off
+5. **Using a keyboard:** The reading area jumps to each link or button as you press `Tab`. You can also scroll the page with the arrow keys to move text through the clear area
+6. **Adjust as needed:** Move your mouse up or down to position the clear area exactly where you need it
+7. **Deactivate:** Click the "Reading Mask" button again to turn it off
 
 **Top tip:** Try moving your mouse slowly down the page as you read. This creates a smooth, guided reading experience.
 
@@ -285,11 +288,14 @@ All your preferences are **automatically saved** in your browser. This means:
 
 Every feature is fully accessible via keyboard:
 
-- **Tab** – Move between controls
+- **Tab** – Move between controls (in the Display Modes and Text Controls groups, Tab goes straight to the selected option)
 - **Shift + Tab** – Move backwards
 - **Arrow keys** – Navigate between options in each group
+- **Home** / **End** – Jump to the first or last option in a group
 - **Enter** or **Space** – Activate a button or select an option
 - **Escape** – Close the accessibility panel
+
+**Screen reader users:** When you move to the "Accessibility Tools" button, your screen reader also tells you which settings are currently switched on, for example "Active settings: Dark mode, Large text".
 
 ---
 
@@ -297,17 +303,17 @@ Every feature is fully accessible via keyboard:
 
 These tools work on all modern browsers:
 
-- ✅ Chrome (version 76 and newer)
-- ✅ Firefox (version 67 and newer)
-- ✅ Safari (version 12.1 and newer)
-- ✅ Edge (version 79 and newer)
-- ✅ Opera (version 62 and newer)
+- ✅ Chrome (version 80 and newer)
+- ✅ Firefox (version 74 and newer)
+- ✅ Safari (version 14 and newer)
+- ✅ Edge (version 80 and newer)
+- ✅ Opera (version 67 and newer)
 
 **Mobile devices:**
-- ✅ iPhone and iPad (iOS 13 and newer)
-- ✅ Android devices (Android 10 and newer)
+- ✅ iPhone and iPad (iOS 14 and newer)
+- ✅ Android devices (Chrome 80 and newer)
 
-This covers over 97% of all internet users.
+In practice, this means any browser updated since late 2020.
 
 ---
 
@@ -361,9 +367,9 @@ We're always working to improve accessibility. If you have suggestions or encoun
 
 For those interested in the technical aspects:
 
-- **Performance impact:** Less than 1% on page load times
-- **File size:** Approximately 29 KB when compressed
-- **Standards compliance:** Built following WCAG 2.1 Level AA guidelines
+- **Performance impact:** Minimal, with no dependencies and no network requests after the page loads
+- **File size:** Approximately 10 KB when compressed
+- **Standards compliance:** Built following WCAG 2.2 Level AA guidelines
 - **Update frequency:** Reading mask updates at 60 frames per second for smooth movement
 - **Browser storage:** Uses approximately 200 bytes of local storage
 
