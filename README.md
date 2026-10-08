@@ -2,7 +2,7 @@
 
 A lightweight, customizable accessibility toolkit that provides users with visual and reading assistance tools to improve their browsing experience.
 
-**Live Demo:** Try all features and see how the accessibility tools work in a real-world environment at <a href="https://nyssen.me/widgets/accessibility-tools/" target="_blank">https://nyssen.me/widgets/accessibility-tools/</a>
+**Live Demo:** Try all features and see how the accessibility tools work in a real-world environment at <a href="https://nyssen.me/tools/accessibility-toolkit/" target="_blank">https://nyssen.me/tools/accessibility-toolkit/</a>
 
 ## Overview
 
@@ -17,13 +17,12 @@ This accessibility widget offers a comprehensive set of tools designed to help u
    <link rel="stylesheet" href="assets/css/accessibility-tools.css">
    ```
 
-2. **Add the toggle button** (typically in your header):
+2. **Add the toggle button** (typically in your header). Its visible text is its accessible name, so don't add an `aria-label` that differs from it (WCAG 2.5.3 Label in Name):
    ```html
    <button
        class="accessibility-toggle-btn"
        type="button"
        aria-haspopup="dialog"
-       aria-label="Accessibility options"
        aria-expanded="false"
        aria-controls="accessibility-panel">
        <span>Accessibility Tools</span>
@@ -36,17 +35,21 @@ This accessibility widget offers a comprehensive set of tools designed to help u
        class="accessibility-widget-panel"
        id="accessibility-panel"
        role="dialog"
-       aria-label="Accessibility Settings"
+       aria-modal="true"
+       aria-labelledby="accessibility-panel-title"
        aria-hidden="true"
        data-open="false">
+       <h2 id="accessibility-panel-title">Accessibility Tools</h2>
        <!-- Panel content here -->
    </div>
    ```
 
-4. **Include the JavaScript file** before closing `</body>`:
+4. **Include the JavaScript file**, either in the `<head>` with `defer` or before closing `</body>`:
    ```html
-   <script src="assets/js/accessibility-tools.js"></script>
+   <script src="assets/js/accessibility-tools.js" defer></script>
    ```
+
+5. **Optional: avoid a flash of the wrong theme.** Saved settings are applied when the script runs, so a visitor who chose dark mode may briefly see the light theme first. To prevent this, add the small inline script from the `<head>` of [index.html](index.html) before your stylesheets. If your site uses a Content Security Policy, allow it with a hash or nonce.
 
 ### Complete Example
 
@@ -61,56 +64,57 @@ See [index.html](index.html) for a complete working example with all features im
 - **High Contrast Mode** - Maximum text-to-background contrast
 - **Greyscale Mode** - Removes all colors from the page
 
-The widget automatically detects the user's device color preference on first visit.
+On first visit, the widget follows the user's device preferences: dark mode if `prefers-color-scheme: dark` is set, otherwise high contrast if `prefers-contrast: more` is set.
 
 ### Text Controls (3 options)
 
 - **Normal Text Size** - Standard size as designed
 - **Large Text Size** - Increases all text by 20%
-- **Bold Text** - Makes all text bolder and thicker
+- **Bold Text** - Increases all text by 20% (like Large Text Size) and makes all of it bold
 
 ### Visual Aids (4 toggles)
 
 - **Large Cursor** - Increases cursor size approximately 3x
 - **Highlight Links** - Adds yellow background and underline to all links
 - **Hide Images** - Hides images and displays their alt text in their place (decorative images with an empty `alt` are simply hidden)
-- **Reading Mask** - Creates a spotlight effect that highlights the current reading line (proven to help users with dyslexia read 15-25% faster)
+- **Reading Mask** - Creates a spotlight effect that highlights the current reading line, which can help users with dyslexia keep their place and read more comfortably. The clear band follows the mouse, touch, or keyboard focus
 
 ### Additional Features
 
 - **Reset All Settings** - Returns all settings to defaults
 - **Automatic Settings Persistence** - User preferences are saved to localStorage
 - **Full Keyboard Accessibility** - All features are keyboard-navigable
+- **Screen Reader Support** - The toggle button's accessible description lists the settings currently active, matching the visual marker on the button
 - **Privacy-Focused** - All data stored locally, nothing sent to servers
 
 ## Performance
 
-- Minimal impact on page load times (less than 1% typically)
-- Compressed file size: approximately 29KB
+- Lightweight, with minimal impact on page load times: no dependencies and no network requests after the page loads
+- Compressed file size: approximately 10KB (CSS and JavaScript, gzipped)
 - Reading mask updates at 60 FPS for smooth movement
 - Uses approximately 200 bytes of localStorage
 
 ## Browser Support
 
 Works on all modern browsers:
-- Chrome 76+
-- Firefox 67+
-- Safari 12.1+
-- Edge 79+
-- Opera 62+
+- Chrome 80+
+- Firefox 74+
+- Safari 14+
+- Edge 80+
+- Opera 67+
 
 Mobile support:
-- iOS 13+
-- Android 10+
+- iOS 14+
+- Android (Chrome 80+)
 
-Covers over 97% of all internet users.
+In practice, any browser version released since late 2020.
 
 ## Who Benefits?
 
 The widget helps users with:
 
 - **Visual Impairments** - Large cursor, high contrast, large text, bold text, highlight links
-- **Dyslexia** - Reading mask (most beneficial), bold text, large text, high contrast
+- **Dyslexia** - Reading mask (often the most helpful), bold text, large text, high contrast
 - **ADHD** - Reading mask, hide images, greyscale mode, dark mode
 - **Light Sensitivity/Photophobia** - Dark mode, greyscale mode, reading mask
 - **Motor Impairments** - Large cursor, highlight links, large text (all fully keyboard-accessible)
@@ -136,10 +140,12 @@ See [USER-GUIDE.md](USER-GUIDE.md) for comprehensive documentation including:
 **Key Implementation Notes:**
 
 1. The widget uses `localStorage` to persist user preferences
-2. Theme preference detection uses `prefers-color-scheme` media query
-3. All ARIA attributes are properly implemented for screen reader support
-4. The reading mask uses mouse/touch position tracking with `requestAnimationFrame`
+2. Theme preference detection uses the `prefers-color-scheme` and `prefers-contrast` media queries
+3. All ARIA attributes are properly implemented for screen reader support. The radio groups use a roving `tabindex`, so `Tab` moves between groups and the arrow keys move within them
+4. The reading mask uses mouse/touch position tracking with `requestAnimationFrame`, and follows keyboard focus via `focusin`
 5. CSS classes are applied to the `<html>` element for global theme changes
+6. "Hide Images" inserts a `<span class="img-alt-text" role="img">` after each image with alt text, and a `MutationObserver` labels images added later while the option is on
+7. Supports Windows contrast themes (`forced-colors`), `prefers-reduced-motion`, and `prefers-contrast`
 
 **Customization:**
 
@@ -148,7 +154,7 @@ You can customize the widget appearance by modifying `assets/css/accessibility-t
 ## File Structure
 
 ```
-v2/
+Accessibility-Toolkit/
 ├── README.md                           # This file
 ├── USER-GUIDE.md                       # End-user documentation
 ├── index.html                          # Demo/example implementation
@@ -156,11 +162,12 @@ v2/
 └── assets/
     ├── css/
     │   ├── accessibility-tools.css     # Main widget styles
-    │   └── milligram.css              # Demo page styles
+    │   ├── milligram.css               # Demo page styles
+    │   └── normalize.min.css           # Demo page CSS reset
     ├── js/
     │   └── accessibility-tools.js      # Main widget functionality
     └── images/
-        └── alice-900.webp             # Demo image
+        └── img_5255.webp               # Demo image
 ```
 
 ## Important Notes
@@ -181,7 +188,7 @@ Continue to ensure your website is built with accessibility best practices from 
 
 ## Standards Compliance
 
-Built following WCAG 2.1 Level AA guidelines with focus on:
+Built following WCAG 2.2 Level AA guidelines with focus on:
 - Keyboard navigation
 - ARIA attributes
 - Focus management
@@ -209,4 +216,4 @@ Copyright © nyssen.me
 ---
 
 **Version:** 2.0
-**Last Updated:** 2025
+**Last Updated:** 2026
